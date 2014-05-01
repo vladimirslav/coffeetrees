@@ -1,1 +1,1 @@
-coffee -c -o js coffee
+call coffee -c -o js coffee

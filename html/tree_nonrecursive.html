@@ -5,19 +5,17 @@
         <script src="../js/nonrecursive_tree.js"></script> <!-- the only difference between both files is this line -->
     </head>
     <body>
-        <h1>Tree nonrecursive</h1>
+        <h1>Tree recursive</h1>
         <script type="text/javascript">
           jQuery(function() {
             var tree;
             tree = window.createTree("tree");
-            tree.add(0, "noname");
-            tree.add(1, "treetest");
-            tree.add(2, "treetest");
-            tree.add(3, "treetest");
-            for (i = 4; i <= 10; i++) {
-              tree.add(i - 1, "cn" + i);
+            tree.add(0, "node0");
+            tree.add(0, "node1");
+            tree.add(0, "node2");
+            for (i = 1; i <= 10; i++) {
+              tree.add(i - 1, "node" + (i + 3));
             }
-            tree.add(0, "noname2");
             
             tree.draw();
             
@@ -47,4 +45,3 @@
     <button id="load-tree">Load Tree</button><br/>
     
     <div id="tree"></div>
-</html>

@@ -9,15 +9,13 @@
         <script type="text/javascript">
           jQuery(function() {
             var tree;
-            tree = window.createTree("tree-start");
-            tree.add(0, "noname");
-            tree.add(1, "treetest");
-            tree.add(2, "treetest");
-            tree.add(3, "treetest");
-            for (i = 4; i <= 10; i++) {
-              tree.add(i - 1, "cn" + i);
+            tree = window.createTree("tree");
+            tree.add(0, "node0");
+            tree.add(0, "node1");
+            tree.add(0, "node2");
+            for (i = 1; i <= 10; i++) {
+              tree.add(i - 1, "node" + (i + 3));
             }
-            tree.add(0, "noname2");
             
             tree.draw();
             
@@ -28,12 +26,15 @@
             });
             
             $("#save-tree").click(function() {
-                window.saveTree()
+                window.saveTree("tree-recursive")
             });
             
             $("#load-tree").click(function() {
-                tree = window.loadTree("tree-start")
-                tree.draw()
+                tree = window.loadTree("tree-recursive", "tree")
+                if (tree != undefined)
+                {
+                    tree.draw()
+                }
             });
           });
         </script>
@@ -42,4 +43,6 @@
     <button id="add-new">Add new node</button><input type="text" id="newname"><br/>
     <button id="save-tree">Save Tree</button><br/>
     <button id="load-tree">Load Tree</button><br/>
+    
+    <div id="tree"></div>
 </html>

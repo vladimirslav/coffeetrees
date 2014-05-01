@@ -1,1 +1,4 @@
 Simple tree implementation with CoffeeScript
+
+- Run compile.bat to prepare js files
+- See examples in "html" folder

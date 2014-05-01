@@ -18,7 +18,7 @@ class Node
         dom_parent = $("#node-"  + @_parent).find("ul:first")
         
         if @_parent == 0
-            dom_parent = @_tree.getStartingElement()
+            dom_parent = @_tree.getStartingElement().find("ul:first")
         
         
         dom_parent.append(
@@ -59,7 +59,7 @@ class Node
                         .attr("type", "text")
                         .hide()
                 )
-        );
+        )
         $("#node-"  + @_id).append($("<ul>"))
         
         for child in @_children
@@ -94,17 +94,17 @@ class Node
 class Tree
     
     constructor: (@_starting_element_id) ->
+        @_node_amount = 0
         @_was_drawn = false
         @_last_id = 0
         @_nodes = {}
         @_my_nodes = []
     
     draw: ->
-        if @was_drawn
-            $("#" + @_starting_element_id).remove()
+        $("#" + @_starting_element_id).empty()
         
-        $("body").append(
-            $("<ul>").attr("id", @_starting_element_id)
+        $("#" + @_starting_element_id).append(
+            $("<ul>")
         )
         
         for node in @_my_nodes
@@ -114,7 +114,8 @@ class Tree
         this
         
     add: (parent, name) ->
-        @_last_id++;
+        @_last_id++
+        @_node_amount++
         id = @_last_id
         
         if parent != 0
@@ -132,6 +133,9 @@ class Tree
         else
             undefined
     
+    getTotalNodes:
+        @_node_amount
+    
     getStartingElement: ->
         $("#" + @_starting_element_id)
     
@@ -141,6 +145,7 @@ class Tree
             @draw()
     
     eraseNode: (nodeId) ->
+        @_node_amount++
         if nodeId of @_nodes
             @_nodes[nodeId].erase()
             delete @_nodes[nodeId]
@@ -195,20 +200,20 @@ changeName = (id, name) ->
     if tree
         tree.changeNodeName(id, name)
 
-saveTree = ->
+saveTree = (name) ->
     if tree
         if localStorage?
-            localStorage["tree"] = tree.getJson()
+            localStorage[name] = tree.getJson()
         else
             alert('No localstorage supported')
         
         
-loadTree = (location) ->
+loadTree = (name, location) ->
     if tree
         tree.erase()
     if localStorage?
-        if (localStorage["tree"])
-            treeNodes = JSON.parse localStorage["tree"]
+        if (localStorage[name])
+            treeNodes = JSON.parse localStorage[name]
             tree = new Tree(location)
             tree.load(treeNodes)
         else
