@@ -1,6 +1,6 @@
 class Node
     
-    constructor: (@_name, @_parent, @_id, @_level, @_tree) ->
+    constructor: (@_name, @_parent, @_id, @_tree) ->
         @_children_amount = 0
         @_children = []
     
@@ -15,7 +15,6 @@ class Node
             @_children.splice(childPos, 1)
         
     draw: ->
-        
         dom_parent = $("#node-"  + @_parent).find("ul:first")
         
         if @_parent == 0
@@ -40,7 +39,6 @@ class Node
                                 id = @_tree.add(@_id, "")
                                 new_node = @_tree.getNode id
                                 new_node.draw()
-                                console.log(new_node)
                                 false
                 )
                 .append(
@@ -69,13 +67,16 @@ class Node
             if child_node
                child_node.draw()
         this
-        
+    
+    getId: -> 
+        @_id
+    
+    getParent: ->
+        @_parent
+    
     getName: ->
         @_name
-    
-    getLevel: ->
-        @_level
-        
+            
     erase: ->
         
         for i in [@_children.length - 1..0] by -1 
@@ -94,7 +95,7 @@ class Tree
     
     constructor: (@_starting_element_id) ->
         @_was_drawn = false
-        @_node_amount = 0
+        @_last_id = 0
         @_nodes = {}
         @_my_nodes = []
     
@@ -113,19 +114,15 @@ class Tree
         this
         
     add: (parent, name) ->
-        @_node_amount++;
-        id = @_node_amount
-        level = 0
+        @_last_id++;
+        id = @_last_id
         
         if parent != 0
-            level = @_nodes[parent].getLevel()
             @_nodes[parent].addChild(id)
-            parent_node = $("#node-" + parent).find("ul:first")
-            
         else
             @_my_nodes.push id
             
-        @_nodes[id] = new Node(name, parent, id, level + 1, this)
+        @_nodes[id] = new Node(name, parent, id, this)
         
         id
         
@@ -156,6 +153,34 @@ class Tree
             @eraseNode(@_my_nodes[i])
         undefined
     
+    getJson: ->
+        data = {}
+        
+        for nodeKey of @_nodes
+            node = @_nodes[nodeKey]
+            id = node.getId()
+            
+            data[id] = {name: node.getName(), parent: node.getParent()}
+        
+        JSON.stringify data
+    
+    load: (nodes) ->
+        for nodeKey of nodes
+            node = nodes[nodeKey]
+            id = nodeKey
+            
+            # we know that child nodes can only be added to previously created nodes
+            # no need to check if parent exist
+            if node.parent != 0
+                @_nodes[node.parent].addChild(id)
+            else
+                @_my_nodes.push id
+                
+            @_nodes[id] = new Node(node.name, node.parent, id, this)
+            @_last_id = parseInt(nodeKey, 10) + 1
+        
+        this
+        
 tree = undefined
   
 createTree = (parentElement) ->
@@ -170,6 +195,29 @@ changeName = (id, name) ->
     if tree
         tree.changeNodeName(id, name)
 
+saveTree = ->
+    if tree
+        if localStorage?
+            localStorage["tree"] = tree.getJson()
+        else
+            alert('No localstorage supported')
+        
+        
+loadTree = (location) ->
+    if tree
+        tree.erase()
+    if localStorage?
+        if (localStorage["tree"])
+            treeNodes = JSON.parse localStorage["tree"]
+            tree = new Tree(location)
+            tree.load(treeNodes)
+        else
+            alert('Tree not found')
+    else
+        alert('No localstorage supported')
+        
 window.createTree = createTree
 window.getTree = getTree
 window.changeName = changeName
+window.saveTree = saveTree
+window.loadTree = loadTree
