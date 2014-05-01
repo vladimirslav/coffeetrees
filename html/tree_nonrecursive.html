@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="../js/nonrecursive_tree.js"></script> <!-- the only difference between both files is this line -->
+    </head>
+    <body>
+        <h1>Tree nonrecursive</h1>
+        <script type="text/javascript">
+          jQuery(function() {
+            var tree;
+            tree = window.createTree("tree");
+            tree.add(0, "noname");
+            tree.add(1, "treetest");
+            tree.add(2, "treetest");
+            tree.add(3, "treetest");
+            for (i = 4; i <= 10; i++) {
+              tree.add(i - 1, "cn" + i);
+            }
+            tree.add(0, "noname2");
+            
+            tree.draw();
+            
+            $("#add-new").click(function() {
+                tree.add(0, $("#newname").val())
+                tree.draw()
+                $("#newname").val("")
+            });
+            
+            $("#save-tree").click(function() {
+                window.saveTree("tree-nonrecursive")
+            });
+            
+            $("#load-tree").click(function() {
+                tree = window.loadTree("tree-nonrecursive", "tree")
+                if (tree != undefined)
+                {
+                    tree.draw()
+                }
+            });
+          });
+        </script>
+        
+    </body>
+    <button id="add-new">Add new node</button><input type="text" id="newname"><br/>
+    <button id="save-tree">Save Tree</button><br/>
+    <button id="load-tree">Load Tree</button><br/>
+    
+    <div id="tree"></div>
+</html>
