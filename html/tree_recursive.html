@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="../js/recursive_tree.js"></script>
+    </head>
+    <body>
+        <h1>Tree recursive</h1>
+        <script type="text/javascript">
+          jQuery(function() {
+            console.log("here");
+            var i, x, _i;
+            x = new Tree("tree-start");
+            x.add(0, "noname");
+            x.add(1, "treetest");
+            x.add(2, "treetest");
+            x.add(3, "treetest");
+            for (i = _i = 4; _i <= 10; i = ++_i) {
+              x.add(i - 1, "cn" + i);
+            }
+            x.add(0, "noname2");
+            return x.draw();
+          });
+        </script>
+    </body>
+</html>
