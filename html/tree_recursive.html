@@ -8,9 +8,8 @@
         <h1>Tree recursive</h1>
         <script type="text/javascript">
           jQuery(function() {
-            console.log("here");
             var i, x, _i;
-            x = new Tree("tree-start");
+            x = window.createTree("tree-start");
             x.add(0, "noname");
             x.add(1, "treetest");
             x.add(2, "treetest");
@@ -19,7 +18,7 @@
               x.add(i - 1, "cn" + i);
             }
             x.add(0, "noname2");
-            return x.draw();
+            x.draw();
           });
         </script>
     </body>
