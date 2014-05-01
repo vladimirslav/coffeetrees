@@ -14,7 +14,7 @@
             tree.add(0, "node1");
             tree.add(0, "node2");
             for (i = 1; i <= 10; i++) {
-              tree.add(i - 1, "node" + (i + 3));
+              tree.add(i - 1, "node" + i);
             }
             
             tree.draw();
@@ -39,9 +39,10 @@
           });
         </script>
         
+        <button id="add-new">Add new node</button><input type="text" id="newname"><br/>
+        <button id="save-tree">Save Tree</button><br/>
+        <button id="load-tree">Load Tree</button><br/>
+        
+        <div id="tree"></div>
+        
     </body>
-    <button id="add-new">Add new node</button><input type="text" id="newname"><br/>
-    <button id="save-tree">Save Tree</button><br/>
-    <button id="load-tree">Load Tree</button><br/>
-    
-    <div id="tree"></div>
