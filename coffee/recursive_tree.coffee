@@ -30,20 +30,30 @@ class Node
                     $("<button>")
                         .text("X")
                         .click => 
-                                getTree().eraseNode(@_id)
+                                @_tree.eraseNode(@_id)
                                 false
                 )
                 .append(
                     $("<button>")
-                        .text("Change Name")
+                        .text("+")
+                        .click => 
+                                id = @_tree.add(@_id, "")
+                                new_node = @_tree.getNode id
+                                new_node.draw()
+                                console.log(new_node)
+                                false
+                )
+                .append(
+                    $("<button>")
+                        .text("Edit")
                         .data('node', @_id)
                         .click ->
-                            if $(@).text() == "Change Name"
+                            if $(@).text() == "Edit"
                               $(@).siblings('input').show()
                               $(@).text("Save")
                             else
                               $(@).siblings('input').hide()  
-                              $(@).text("Change Name")
+                              $(@).text("Edit")
                               changeName($(@).data('node'), $(@).siblings('input').val())
                 )
                 .append(
@@ -117,7 +127,7 @@ class Tree
             
         @_nodes[id] = new Node(name, parent, id, level + 1, this)
         
-        this
+        id
         
     getNode: (nodeId) ->
         if nodeId of @_nodes

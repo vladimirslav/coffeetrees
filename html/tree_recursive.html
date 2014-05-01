@@ -19,7 +19,15 @@
             }
             x.add(0, "noname2");
             x.draw();
+            
+            $("#add-new").click(function() {
+                x.add(0, $("#newname").val())
+                x.draw()
+                $("#newname").val("")
+            });
           });
+          
         </script>
     </body>
+    <button id="add-new">Add new node</button><input type="text" id="newname">
 </html>
